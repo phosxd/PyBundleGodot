@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://b4xcwwwhidjxa"]
+
+[ext_resource type="Script" uid="uid://w70dy8fkgx2j" path="res://Example/PythonEmbedded/main.gd" id="1_jp2im"]
+[ext_resource type="Script" uid="uid://7ifrmik8afxf" path="res://addons/BinBundle/BinBundleProcess.gd" id="2_pstut"]
+
+[node name="Main" type="VBoxContainer" unique_id=1493080377]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jp2im")
+
+[node name="BinBundleProcess" type="Node" parent="." unique_id=707821645]
+unique_name_in_owner = true
+script = ExtResource("2_pstut")
+exe_path_internal = "res://addons/PyBundle/Interpreter"
+output_poll_interval = 0.1
+error_poll_interval = 0.1
+metadata/_custom_type_script = "uid://7ifrmik8afxf"
+
+[node name="Output" type="RichTextLabel" parent="." unique_id=1372825506]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
+autowrap_mode = 0
+
+[node name="Input" type="LineEdit" parent="." unique_id=2046064929]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Enter Python expression..."
+
+[connection signal="bundle_error_revieved" from="BinBundleProcess" to="." method="_on_bundle_error_revieved"]
+[connection signal="error_received" from="BinBundleProcess" to="." method="_on_sub_process_error_received"]
+[connection signal="output_received" from="BinBundleProcess" to="." method="_on_sub_process_output_received"]
+[connection signal="stopped" from="BinBundleProcess" to="." method="_on_sub_process_stopped"]
+[connection signal="text_submitted" from="Input" to="." method="_on_input_text_submitted"]

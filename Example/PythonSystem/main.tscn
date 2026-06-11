@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://b8i7iybpb8h6w"]
+
+[ext_resource type="Script" uid="uid://kj28yks6m44d" path="res://Example/PythonSystem/main.gd" id="1_pejmk"]
+[ext_resource type="Script" uid="uid://de0v5bjevo28f" path="res://addons/BinBundle/SubProcess.gd" id="2_s0egl"]
+
+[node name="Main" type="VBoxContainer" unique_id=1493080377]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pejmk")
+script_path = "res://main.py"
+
+[node name="SubProcess" type="Node" parent="." unique_id=498020850]
+unique_name_in_owner = true
+script = ExtResource("2_s0egl")
+path = "python"
+output_poll_interval = 0.1
+error_poll_interval = 0.1
+metadata/_custom_type_script = "uid://de0v5bjevo28f"
+
+[node name="Output" type="RichTextLabel" parent="." unique_id=1372825506]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+scroll_following = true
+autowrap_mode = 0
+
+[node name="Input" type="LineEdit" parent="." unique_id=2046064929]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Enter Python expression..."
+keep_editing_on_text_submit = true
+
+[connection signal="error_received" from="SubProcess" to="." method="_on_sub_process_error_received"]
+[connection signal="output_received" from="SubProcess" to="." method="_on_sub_process_output_received"]
+[connection signal="stopped" from="SubProcess" to="." method="_on_sub_process_stopped"]
+[connection signal="text_submitted" from="Input" to="." method="_on_input_text_submitted"]
