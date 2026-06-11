@@ -1,11 +1,13 @@
 extends EditorExportPlugin
 
+const interpreter_dir:String = 'res://addons/PyBundle/Interpreter/'
+
 
 func _export_begin(features:PackedStringArray, is_debug:bool, _path:String, flags:int) -> void:
 	# Add interpreter.
-	for path:String in DirAccess.get_files_at('res://addons/PyBundle/Interpreter'):
-		if path.get_extension() not in ['x86_64','x86_32','arm64','arm32']: continue
-		add_file(path, FileAccess.get_file_as_bytes(path), false)
+	for path:String in DirAccess.get_files_at(interpreter_dir):
+		if path.get_extension() != 'bin': continue
+		add_file(interpreter_dir+path, FileAccess.get_file_as_bytes(interpreter_dir+path), false)
 
 	# Add Python scripts.
 	walk_dir('res://', func(script_path:String) -> void:
