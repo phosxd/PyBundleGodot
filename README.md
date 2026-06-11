@@ -2,9 +2,11 @@
 
 <img src="./git_assets/icon.png" align=""></img>
 
-**Version:** 0.0.1
+**Version:** 1.0.0
 
-PyBundleGodot is a tool for Godot 4.6 that makes it easy to efficiently bundle Python into your Godot project!
+PyBundle is a tool for Godot 4.6 that makes it easy to efficiently bundle Python into your Godot project!
+
+This project is very much work in progress & has a lot more that needs to be done, but for now it is workable.
 
 </div>
 
@@ -14,6 +16,9 @@ PyBundleGodot is a tool for Godot 4.6 that makes it easy to efficiently bundle P
 - [Explanation](#explanation)
 - [Platforms](#platforms)
 - [Features](#features)
+  - [Works out of the box](#works-out-of-the-box-with-demos)
+  - [Fully featured 3.6 interpreter](#fully-featured-36-interpreter)
+  - [Automatic build tools](#automatic-build-tools)
 
 
 # Explanation
@@ -32,6 +37,17 @@ It's a whale, that's all. I don't have anything against it, I just don't like ho
 - PyBundle Python interpreter size (with all standard libraries): 4.5MB
 - DotNet size (at least for me on Linux): 76MB
 
+## Two plugins
+PyBundleGodot comes with 2 separate plugins:
+
+Firstly the actual "PyBundle" plugin which contains editor tools for compiling the interpreter & is also responsible for properly including the interpreter executable when you export your project.
+
+The second plugin is "BinBundle" which actually handles sub-process communication & running embedded executables, it comes with 2 nodes "SubProcess" & "BinBundleProcess".
+"SubProcess" runs the sub-process & handles communication, while "BinBundleProcess" builds on top of that to automatically extract the correct platform-specific executable & run it through SubProcess.
+
+
+---
+
 
 # Platforms
 PyBundle can only be used on Linux, Windows, Mac, & Android.
@@ -40,10 +56,21 @@ Furthermore there is only a pre-built interpreter for Linux, you will need to co
 
 # Features
 
-## Fully Featured 3.6 Interpreter
-Access 
+## Works out of the box with demos
+No setup or configuration needed, you don't even need Python installed on your system, the interpreter comes bundled in if you are on Linux.
 
-## Automatic Build Tools
+Run the project to test out the embedded Python console demo! There is also a demo for testing your locally installed Python within Godot, which you can techinically use for your project but it requires that the user has the exact version of Python you need & the exact libraries you need as well.
+
+## Fully featured 3.6 interpreter
+Access all standard libraries in Python 3.6 (except GUI packages like TkInter) all in a 4.5MB or 8.9MB package (depending on whether you use Nuitka or PyInstaller).
+
+**Nuitka VS PyInstaller:**
+- Nuitka:
+  - Smaller binary size.
+- PyInstaller:
+  - Slightly more memory efficient.
+
+## Automatic build tools
 Not happy with the current version of Python or need third-party libraries? Compile the interpreter on your own machine using Nuitka or PyInstaller & the pre-made Shell scripts.
 Navigate to the Godot editor tools menu under "Project" to find the build buttons.
 
