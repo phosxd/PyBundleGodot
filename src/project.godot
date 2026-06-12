@@ -14,6 +14,10 @@ config/name="PyBundle"
 run/main_scene="uid://b4xcwwwhidjxa"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 
+[autoload]
+
+PyRunner="*uid://beclgjifsws85"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/BinBundle/plugin.cfg", "res://addons/PyBundle/plugin.cfg")

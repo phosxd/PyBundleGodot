@@ -18,9 +18,9 @@ enum BinBundleError {
 ## [br]If the path is "executable.linux.x86_64" then the name is "executable".
 @export var exe_name:String = ''
 ## Directory containing the executable inside the virtual (res) file system.
-@export var exe_path_internal:String = 'res://BIN/'
+@export var exe_dir_internal:String = 'res://BIN/'
 ## Directory to export executable to.
-@export var exe_path_external:String = 'user://BIN/'
+@export var exe_dir_external:String = 'user://BIN/'
 
 
 ## Initialize. Must be called before [member start].
@@ -37,8 +37,8 @@ func _ready() -> void:
 	extension += '.'+architecture+'.bin'
 	var file_name:String = exe_name+extension
 	if exe_name.is_empty(): file_name = file_name.trim_prefix('.')
-	var full_path:String = exe_path_internal + ('' if exe_path_internal.ends_with('/') else '/') + file_name
-	var full_path_external:String = ProjectSettings.globalize_path(exe_path_external+file_name)
+	var full_path:String = exe_dir_internal + ('' if exe_dir_internal.ends_with('/') else '/') + file_name
+	var full_path_external:String = ProjectSettings.globalize_path(exe_dir_external+file_name)
 
 	# Get binary.
 	var bytes:PackedByteArray = FileAccess.get_file_as_bytes(full_path)
@@ -49,7 +49,7 @@ func _ready() -> void:
 	# Write binary to disk if existing binary does not exist or byte count does not match.
 	# There's probably a security concern here, but who's really gonna slip in a foreign binary with the same byte count.
 	if not FileAccess.file_exists(full_path_external) or FileAccess.get_file_as_bytes(full_path_external).size() != bytes.size():
-		DirAccess.make_dir_recursive_absolute(exe_path_external)
+		DirAccess.make_dir_recursive_absolute(exe_dir_external)
 		DirAccess.remove_absolute(full_path_external)
 		var file := FileAccess.open(full_path_external, FileAccess.WRITE)
 		file.store_buffer(bytes)

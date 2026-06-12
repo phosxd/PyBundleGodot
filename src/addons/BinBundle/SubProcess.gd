@@ -79,7 +79,7 @@ func stop() -> void:
 
 
 ## Send [param data] to the sub-process.
-## [br] Use [member output_recieved] to listen for a response.
+## [br]Use [member output_recieved] to listen for a response.
 func send_input(data:String) -> void:
 	if not active: return
 

@@ -14,7 +14,8 @@ script = ExtResource("1_jp2im")
 [node name="BinBundleProcess" type="Node" parent="." unique_id=707821645]
 unique_name_in_owner = true
 script = ExtResource("2_pstut")
-exe_path_internal = "res://addons/PyBundle/Interpreter"
+exe_dir_internal = "res://addons/PyBundle/Interpreter/"
+exe_dir_external = "user://Python/"
 output_poll_interval = 0.1
 error_poll_interval = 0.1
 metadata/_custom_type_script = "uid://7ifrmik8afxf"

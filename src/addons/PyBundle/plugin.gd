@@ -1,6 +1,7 @@
 @tool
 extends EditorPlugin
 
+const pyrunner_path:String = 'res://addons/PyBundle/PyRunner.gd'
 const interpreter_script_name:String = 'interpreter.py'
 const build_script_names:PackedStringArray = [
 	'nuitka_build.sh',
@@ -22,6 +23,14 @@ func _exit_tree() -> void:
 	remove_export_plugin(export_plugin)
 	remove_tool_menu_item('Build Python Interpreter (Nuitka)')
 	remove_tool_menu_item('Build Python Interpreter (PyInstaller)')
+
+
+func _enable_plugin() -> void:
+	add_autoload_singleton('PyRunner', pyrunner_path)
+
+
+func _disable_plugin() -> void:
+	remove_autoload_singleton('PyRunner')
 
 
 func _build_py(mode:int) -> void:
