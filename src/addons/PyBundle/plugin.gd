@@ -3,11 +3,17 @@ extends EditorPlugin
 
 const pyrunner_path:String = 'res://addons/PyBundle/PyRunner.gd'
 const interpreter_script_name:String = 'interpreter.py'
-const build_script_names:PackedStringArray = [
-	'nuitka_build.sh',
-	'pyinstaller_build.sh',
-]
-const start_binary_name:String = 'interpreter.bin'
+const build_script_names:Dictionary[String,PackedStringArray] = {
+	'linux': [
+		'nuitka_build_linux.sh',
+		'pyinstaller_build_linux.sh',
+	],
+	'windows': [
+		'nuitka_build_windows.bat',
+		'pyinstaller_build_windows.bat',
+	],
+}
+const start_binary_name:String = 'interpreter'
 var proj_root:String = ProjectSettings.globalize_path('res://addons/PyBundle/Interpreter/')
 
 var export_plugin:EditorExportPlugin = preload('res://addons/PyBundle/export.gd').new()
@@ -36,8 +42,16 @@ func _disable_plugin() -> void:
 func _build_py(mode:int) -> void:
 	print_rich('\n[b]Starting Python build process (%s)...[/b]\n' % 'Nuitka' if mode == 0 else 'PyInstaller')
 	var sub = SubProcess.new()
-	sub.path = 'bash'
-	sub.arguments = [proj_root+build_script_names.get(mode)]
+
+	var platform:String = OS.get_name()
+	if platform == 'Linux' or platform.ends_with('BSD'):
+		sub.path = 'bash'
+		sub.arguments = [proj_root+build_script_names.linux.get(mode)]
+	elif platform == 'Windows':
+		sub.path = proj_root+build_script_names.windows.get(mode)
+	else:
+		printerr('Automatic building only supported on Linux or Windows. Sorry not sorry, Mac.')
+		return
 
 	sub.output_received.connect(func(data:String) -> void:
 		print(data)
@@ -45,11 +59,20 @@ func _build_py(mode:int) -> void:
 	sub.error_received.connect(func(data:String) -> void:
 		print_rich('[color=yellow]%s[/color]' % data)
 	)
+
 	sub.stopped.connect(func() -> void:
 		sub.queue_free()
 		# Rename binary.
-		var new_binary_name = get_platform_extension().trim_prefix('.')+'.bin'
-		DirAccess.rename_absolute(proj_root+start_binary_name, proj_root+new_binary_name)
+		var platform_exe_extension:String
+		if platform == 'Windows': platform_exe_extension = 'exe'
+		else: platform_exe_extension = 'bin'
+		var new_binary_name = get_platform_extension().trim_prefix('.')+'.%s' % platform_exe_extension
+		DirAccess.rename_absolute(proj_root+start_binary_name+'.%s' % platform_exe_extension, proj_root+new_binary_name)
+
+		if platform == 'Windows':
+			if mode == 1: DirAccess.rename_absolute(proj_root+'dist/'+start_binary_name+'.exe', proj_root+new_binary_name)
+			print('\nOn Windows, you need to manually remove the left-over directories & files (*.dist, *.build, *.onefile-build, dist, build, *.spec). The only things that should be left are binary/exe files, Python files, batch/shell files, & a markdown file.')
+
 		print_rich('[b]Done.[/b]')
 	)
 

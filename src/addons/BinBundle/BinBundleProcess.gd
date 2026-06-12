@@ -29,12 +29,21 @@ func _ready() -> void:
 	var architecture:String = Engine.get_architecture_name()
 
 	var extension:String = ''
-	if platform == 'Linux' or platform.ends_with('BSD'): extension = '.linux'
-	elif platform == 'Windows': extension = '.windows'
-	elif platform == 'macOS': extension = '.mac'
-	else: extension = '.other'
+	var exe_extension:String = ''
+	if platform == 'Linux' or platform.ends_with('BSD'):
+		extension = '.linux'
+		exe_extension = 'bin'
+	elif platform == 'Windows':
+		extension = '.windows'
+		exe_extension = 'exe'
+	elif platform == 'macOS':
+		extension = '.mac'
+		exe_extension = 'bin' # Idk what the mac equal is ngl.
+	else:
+		extension = '.other'
+		exe_extension = 'bin'
 
-	extension += '.'+architecture+'.bin'
+	extension += '.'+architecture+'.%s' % exe_extension
 	var file_name:String = exe_name+extension
 	if exe_name.is_empty(): file_name = file_name.trim_prefix('.')
 	var full_path:String = exe_dir_internal + ('' if exe_dir_internal.ends_with('/') else '/') + file_name
