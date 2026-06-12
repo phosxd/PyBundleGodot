@@ -40,7 +40,7 @@ It's a whale, that's all. I don't have anything against it, I just don't like ho
 ## Two plugins
 PyBundleGodot comes with 2 separate plugins:
 
-Firstly the actual "PyBundle" plugin which contains editor tools for compiling the interpreter & is also responsible for properly including the interpreter executable when you export your project.
+Firstly the actual "PyBundle" plugin which contains editor tools for compiling the interpreter, includes the `PyRunner` singleton for running Python scripts, & is also responsible for properly including the interpreter executable as well as your Python scripts when you export your project.
 
 The second plugin is "BinBundle" which actually handles sub-process communication & running embedded executables, it comes with 2 nodes "SubProcess" & "BinBundleProcess".
 "SubProcess" runs the sub-process & handles communication, while "BinBundleProcess" builds on top of that to automatically extract the correct platform-specific executable & run it through SubProcess.
@@ -61,18 +61,20 @@ No setup or configuration needed, you don't even need Python installed on your s
 
 Run the project to test out the embedded Python console demo! There is also a demo for testing your locally installed Python within Godot, which you can techinically use for your project but it requires that the user has the exact version of Python you need & the exact libraries you need as well.
 
-## Fully featured 3.6 interpreter
-Access all standard libraries in Python 3.6 (except GUI packages like TkInter) all in a 4.5MB or 8.9MB package (depending on whether you use Nuitka or PyInstaller).
+Want to work from scripts instead of a console? There's a demo for that too! It uses the `PyRunner` singleton which takes a script path & that's it, very simple.
+
+## Fully featured 3.14 interpreter
+Access all standard libraries in Python 3.14.5 (except GUI packages like TkInter) all in a 4.5MB package. Run & import any of your Python scripts like you would in normal Python.
+
+## Automatic build tools
+Not happy with the current version of Python or need third-party libraries? Compile the interpreter on your own machine using Nuitka or PyInstaller & the pre-made Shell scripts.
+Navigate to the Godot editor tools menu under "Project" to find the build buttons.
 
 **Nuitka VS PyInstaller:**
 - Nuitka:
   - Smaller binary size.
 - PyInstaller:
   - Slightly more memory efficient.
-
-## Automatic build tools
-Not happy with the current version of Python or need third-party libraries? Compile the interpreter on your own machine using Nuitka or PyInstaller & the pre-made Shell scripts.
-Navigate to the Godot editor tools menu under "Project" to find the build buttons.
 
 Keep in mind that the pre-made Shell scripts for building the interpreter only work on Linux systems, you can modify them for your platform if needed. If you do end up doing that, please do submit a PR so others do not need to go through the same process.
 
