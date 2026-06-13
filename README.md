@@ -70,7 +70,7 @@ Access all standard libraries in Python 3.14.5 (except GUI packages like TkInter
 Not happy with the current version of Python or need third-party libraries? Compile the interpreter on your own machine using Nuitka & the pre-made Batch/Shell scripts.
 Navigate to the Godot editor tools menu under "Project" to find the build buttons which will vary based on your platform.
 
-Make sure you have [Nuitka](https://nuitka.net/) properly installed on your system before using the build tools, otherwise it may not work. By default PyBundle uses Visual Studio for the Nuitka C++ compilation, you can modify the build script to use the compiler of your choice by changing the `--msvc=latest` flag to another valid value listed in the [Nuitka docs](https://nuitka.net/user-documentation/user-manual.html)
+Make sure you have [Nuitka](https://nuitka.net/) properly installed on your system before using the build tools, otherwise it may not work. By default PyBundle uses Visual Studio for the Nuitka C++ compilation on Windows, you can modify the build script to use the compiler of your choice by changing the `--msvc=latest` flag to another valid value listed in the [Nuitka docs](https://nuitka.net/user-documentation/user-manual.html)
 
 
  

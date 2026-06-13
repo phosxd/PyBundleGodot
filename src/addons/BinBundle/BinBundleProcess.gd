@@ -25,26 +25,7 @@ enum BinBundleError {
 
 ## Initialize. Must be called before [member start].
 func _ready() -> void:
-	var platform:String = OS.get_name()
-	var architecture:String = Engine.get_architecture_name()
-
-	var extension:String = ''
-	var exe_extension:String = ''
-	if platform == 'Linux' or platform.ends_with('BSD'):
-		extension = '.linux'
-		exe_extension = 'bin'
-	elif platform == 'Windows':
-		extension = '.windows'
-		exe_extension = 'exe'
-	elif platform == 'macOS':
-		extension = '.mac'
-		exe_extension = 'bin' # Idk what the mac equal is ngl.
-	else:
-		extension = '.other'
-		exe_extension = 'bin'
-
-	extension += '.'+architecture+'.%s' % exe_extension
-	var file_name:String = exe_name+extension
+	var file_name:String = exe_name + BinBundleUtil.get_platform_extension()+'.%s' % BinBundleUtil.get_platform_exe_extension()
 	if exe_name.is_empty(): file_name = file_name.trim_prefix('.')
 	var full_path:String = exe_dir_internal + ('' if exe_dir_internal.ends_with('/') else '/') + file_name
 	var full_path_external:String = ProjectSettings.globalize_path(exe_dir_external+file_name)
@@ -64,7 +45,7 @@ func _ready() -> void:
 		file.store_buffer(bytes)
 		file.close()
 		# If on Linux, give necessary permissions to run as executable.
-		if platform == 'Linux' or platform.ends_with('BSD'):
+		if BinBundleUtil.platform == 'Linux' or BinBundleUtil.platform.ends_with('BSD'):
 			var exit_code:int = OS.execute('chmod', ['+x', full_path_external])
 			if exit_code != OK:
 				bundle_error_revieved.emit(BinBundleError.CannotChangePermission, [exit_code])

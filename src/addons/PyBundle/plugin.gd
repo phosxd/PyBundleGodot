@@ -21,13 +21,12 @@ var tool_menu_items:PackedStringArray = []
 
 func _enter_tree() -> void:
 	add_export_plugin(export_plugin)
-	var platform:String = OS.get_name()
-	if platform == 'Windows':
+	if BinBundleUtil.platform == 'Windows':
 		for script_name:String in build_script_names.windows:
 			var item_name:String = 'Build Python Interpreter (%s)' % script_name.split('.')[0]
 			add_tool_menu_item(item_name, _build_py.bind(script_name))
 			tool_menu_items.append(item_name)
-	elif platform == 'Linux' or platform.ends_with('BSD'):
+	elif BinBundleUtil.platform == 'Linux' or BinBundleUtil.platform.ends_with('BSD'):
 		for script_name:String in build_script_names.linux:
 			var item_name:String = 'Build Python Interpreter (%s)' % script_name.split('.')[0]
 			add_tool_menu_item(item_name, _build_py.bind(script_name))
@@ -73,10 +72,8 @@ func _build_py(script_name:String) -> void:
 	sub.stopped.connect(func() -> void:
 		sub.queue_free()
 		# Rename binary.
-		var platform_exe_extension:String
-		if platform == 'Windows': platform_exe_extension = 'exe'
-		else: platform_exe_extension = 'bin'
-		var new_binary_name = get_platform_extension().trim_prefix('.')+'.%s' % platform_exe_extension
+		var platform_exe_extension:String = BinBundleUtil.get_platform_exe_extension()
+		var new_binary_name:String = BinBundleUtil.get_platform_extension().trim_prefix('.')+'.%s' % platform_exe_extension
 		DirAccess.rename_absolute(proj_root+start_binary_name+'.%s' % platform_exe_extension, proj_root+new_binary_name)
 
 		if platform == 'Windows':
@@ -86,17 +83,3 @@ func _build_py(script_name:String) -> void:
 	)
 
 	sub.start()
-
-
-func get_platform_extension() -> String:
-	var platform:String = OS.get_name()
-	var architecture:String = Engine.get_architecture_name()
-
-	var extension:String = ''
-	if platform == 'Linux' or platform.ends_with('BSD'): extension = '.linux'
-	elif platform == 'Windows': extension = '.windows'
-	elif platform == 'macOS': extension = '.mac'
-	else: extension = '.other'
-
-	extension += '.'+architecture
-	return extension

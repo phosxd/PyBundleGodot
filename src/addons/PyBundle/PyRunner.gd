@@ -24,12 +24,12 @@ func _init() -> void:
 
 func start_entry_point(entry_point_script_path:String) -> void:
 	# Remove old Python scripts on disk.
-	PyBundleUtil.walk_dir(exe_dir_external, func(file_path:String) -> void:
+	BinBundleUtil.walk_dir(exe_dir_external, func(file_path:String) -> void:
 		if file_path.get_extension() != 'py': return
 		DirAccess.remove_absolute(file_path)
 	)
 	# Export all Python scripts to disk so they can be imported from within Python.
-	PyBundleUtil.walk_dir('res://', func(file_path:String) -> void:
+	BinBundleUtil.walk_dir('res://', func(file_path:String) -> void:
 		if file_path.get_extension() != 'py' or file_path in excluded_scripts: return
 		var script_data: String
 		if file_path in extra_scripts:
