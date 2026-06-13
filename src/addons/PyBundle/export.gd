@@ -3,10 +3,19 @@ extends EditorExportPlugin
 const interpreter_dir:String = 'res://addons/PyBundle/Interpreter/'
 
 
+func _get_name() -> String:
+	return 'PyBundle'
+
+
 func _export_begin(features:PackedStringArray, is_debug:bool, _path:String, flags:int) -> void:
-	# Add interpreter.
+	var platform:String = OS.get_name()
+
+	# Add binaries (for correct platform).
 	for path:String in DirAccess.get_files_at(interpreter_dir):
-		if path.get_extension() != 'bin': continue
+		if platform == 'Windows':
+			if path.get_extension() not in ['exe']: continue
+		else:
+			if path.get_extension() not in ['bin']: continue
 		add_file(interpreter_dir+path, FileAccess.get_file_as_bytes(interpreter_dir+path), false)
 
 	# Add Python scripts.
