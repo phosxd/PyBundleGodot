@@ -51,32 +51,26 @@ The second plugin is "BinBundle" which actually handles sub-process communicatio
 
 # Platforms
 PyBundle can only be used on Linux, Windows, Mac, & Android.
-Furthermore there is only a pre-built interpreter for Linux, you will need to compile the interpreter for other platforms yourself.
+Furthermore there are only pre-built executables for Linux & Windows, you will need to compile the interpreter for other platforms (like Mac) yourself.
 
 
 # Features
 
 ## Works out of the box with demos
-No setup or configuration needed, you don't even need Python installed on your system, the interpreter comes bundled in if you are on Linux.
+No setup or configuration needed, you don't even need Python installed on your system, the interpreter comes bundled in.
 
 Run the project to test out the embedded Python console demo! There is also a demo for testing your locally installed Python within Godot, which you can techinically use for your project but it requires that the user has the exact version of Python you need & the exact libraries you need as well.
 
 Want to work from scripts instead of a console? There's a demo for that too! It uses the `PyRunner` singleton which takes a script path & that's it, very simple.
 
 ## Fully featured 3.14 interpreter
-Access all standard libraries in Python 3.14.5 (except GUI packages like TkInter) all in a 4.5MB package. Run & import any of your Python scripts like you would in normal Python.
+Access all standard libraries in Python 3.14.5 (except GUI packages like TkInter) all in a 4.5MB package (on Linux, is 10MB for Windows). Run & import any of your Python scripts like you would in normal Python.
 
 ## Automatic build tools
-Not happy with the current version of Python or need third-party libraries? Compile the interpreter on your own machine using Nuitka or PyInstaller & the pre-made Shell scripts.
-Navigate to the Godot editor tools menu under "Project" to find the build buttons.
+Not happy with the current version of Python or need third-party libraries? Compile the interpreter on your own machine using Nuitka & the pre-made Batch/Shell scripts.
+Navigate to the Godot editor tools menu under "Project" to find the build buttons which will vary based on your platform.
 
-**Nuitka VS PyInstaller:**
-- Nuitka:
-  - Smaller binary size.
-- PyInstaller:
-  - Slightly more memory efficient.
-
-Keep in mind that the pre-made Shell scripts for building the interpreter only work on Linux systems, you can modify them for your platform if needed. If you do end up doing that, please do submit a PR so others do not need to go through the same process.
+Make sure you have [Nuitka](https://nuitka.net/) properly installed on your system before using the build tools, otherwise it may not work. By default PyBundle uses Visual Studio for the Nuitka C++ compilation, you can modify the build script to use the compiler of your choice by changing the `--msvc=latest` flag to another valid value listed in the [Nuitka docs](https://nuitka.net/user-documentation/user-manual.html)
 
 
  
