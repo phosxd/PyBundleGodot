@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ce1o87hf11mol"]
 
-[ext_resource type="Script" uid="uid://b80l0dehtahxb" path="res://Example/PythonEmbeddedScripts/main.gd" id="1_e8a72"]
+[ext_resource type="Script" uid="uid://b80l0dehtahxb" path="res://Examples/EmbeddedScripts/main.gd" id="1_e8a72"]
 
 [node name="Main" type="VBoxContainer" unique_id=1493080377]
 anchors_preset = 15

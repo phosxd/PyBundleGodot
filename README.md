@@ -2,7 +2,7 @@
 
 <img src="./git_assets/icon.png" align=""></img>
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 
 PyBundle is a tool for Godot 4.6 that makes it easy to efficiently bundle Python into your Godot project!
 
@@ -19,6 +19,7 @@ This project is very much work in progress & has a lot more that needs to be don
   - [Works out of the box](#works-out-of-the-box-with-demos)
   - [Fully featured 3.6 interpreter](#fully-featured-36-interpreter)
   - [Automatic build tools](#automatic-build-tools)
+- [Get Started](#get-started)
 
 
 # Explanation
@@ -73,4 +74,47 @@ Navigate to the Godot editor tools menu under "Project" to find the build button
 Make sure you have [Nuitka](https://nuitka.net/) properly installed on your system before using the build tools, otherwise it may not work. By default PyBundle uses Visual Studio for the Nuitka C++ compilation on Windows, you can modify the build script to use the compiler of your choice by changing the `--msvc=latest` flag to another valid value listed in the [Nuitka docs](https://nuitka.net/user-documentation/user-manual.html)
 
 
- 
+# Get Started
+Open up an IDE that is well suited for Python scripts, you technically can use Godot but it has no auto-completion or syntax highlighting for `.py` files.
+
+Once you have an IDE of your choice all set up, create a test script in your Godot project's root directory (`res://`):
+```python
+# main.py
+def main():
+	print('Hello World')
+
+
+if __name__ == 'main': main()
+```
+
+First test & make sure it works with your on-system Python installation.
+
+After making sure the Python script is valid, we can move on to actually running it in Godot. For this, we need to create an [autoload singleton](https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html) script which will be used to interface with the `PyRunner` singleton provded by PyBundle.
+In your newly created autoload (lets call `init.gd`), paste the following code:
+```gdscript
+# init.gd
+extends Node
+
+
+func _ready() -> void:
+	PyRunner.output_received.connect(_on_output_received)
+	PyRunner.error_received.connect(_on_error_received)
+	PyRunner.stopped.connect(_on_stopped)
+	PyRunner.start_entry_point('res://main.py')
+
+
+func _on_output_received(data:String) -> void:
+	print(data)
+
+
+func _on_error_received(data:String) -> void:
+	printerr(data)
+
+
+func _on_stopped() -> void:
+	printerr('Process stopped')
+```
+
+This is a simple boilerplate script with all the important signals connected. The `PyRunner.start_entry_point('res://main.py')` line is what actually runs your Python script, though keep in mind I recommend this only be run once & trying to call this function while `PyRunner.active` is `true` will print an error.
+
+Now with this autoloaded script in place, when you run your project, the Python script will automatically start as a sub-process that will be killed when your project stops running.

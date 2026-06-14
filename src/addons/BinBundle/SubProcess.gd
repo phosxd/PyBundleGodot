@@ -56,13 +56,23 @@ func start() -> void:
 	io_access = bridge.stdio
 	error_access = bridge.stderr
 	pid = bridge.pid
+	active = true
 
 	# Start output & error listener threads.
 	output_thread.start(_output_listener)
 	error_thread.start(_error_listener)
 
-	active = true
 	started.emit()
+
+
+func execute_with_pipe_in_context(ctx_path:String, run_path:String, run_args:PackedStringArray, blocking:bool=true) -> Dictionary:
+	run_path = ProjectSettings.globalize_path(run_path)
+	var run_args_string:String = '"%s"' % '" "'.join(run_args)
+	if run_args_string == '""': run_args_string = ''
+	if BinBundleUtil.platform == 'Linux' or BinBundleUtil.platform.ends_with('BSD'):
+		return OS.execute_with_pipe('bash', ['-c', 'cd "%s" && "%s" %s' % [ctx_path, run_path, run_args_string]], blocking)
+
+	return {}
 
 
 ## Kills the sub-process.
@@ -92,6 +102,7 @@ func send_input(data:String) -> void:
 # Check for output every `output_poll_interval` seconds.
 func _output_listener() -> void:
 	while output_thread.get_meta('canceled',false) == false:
+		if output_poll_interval == -1: OS.delay_msec(1000); continue
 		OS.delay_msec(int(output_poll_interval*1000))
 		if not OS.is_process_running(pid):
 			stop.call_deferred()
@@ -106,6 +117,7 @@ func _output_listener() -> void:
 # Check for error every `error_poll_interval` seconds.
 func _error_listener() -> void:
 	while error_thread.get_meta('canceled',false) == false:
+		if error_poll_interval == -1: OS.delay_msec(1000); continue
 		OS.delay_msec(int(error_poll_interval*1000))
 		if error_access.get_length() == 0: continue
 

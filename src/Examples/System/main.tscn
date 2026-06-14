@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b8i7iybpb8h6w"]
 
-[ext_resource type="Script" uid="uid://kj28yks6m44d" path="res://Example/PythonSystem/main.gd" id="1_pejmk"]
+[ext_resource type="Script" uid="uid://kj28yks6m44d" path="res://Examples/System/main.gd" id="1_pejmk"]
 [ext_resource type="Script" uid="uid://de0v5bjevo28f" path="res://addons/BinBundle/SubProcess.gd" id="2_s0egl"]
 
 [node name="Main" type="VBoxContainer" unique_id=1493080377]

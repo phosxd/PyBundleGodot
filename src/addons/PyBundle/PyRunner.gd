@@ -5,6 +5,9 @@
 ## [br]You can import any other Python script in the "res" virtual file system just like you normally would for Python scripts.
 extends BinBundleProcess
 
+## Emitted after [member start_entry_point] is executed.
+signal entry_point_started
+
 ## Dictionary in which the key is the path of the Python script & the value is the script itself.
 ## Useful for scenarios where you want to add an importable script that does not actually have a file.
 var extra_scripts:Dictionary[String,String]
@@ -23,6 +26,10 @@ func _init() -> void:
 
 
 func start_entry_point(entry_point_script_path:String) -> void:
+	if active:
+		printerr('Cannot call "PyRunner.start_entry_point" while active.')
+		return
+
 	# Remove old Python scripts on disk.
 	BinBundleUtil.walk_dir(exe_dir_external, func(file_path:String) -> void:
 		if file_path.get_extension() != 'py': return
@@ -52,6 +59,13 @@ func start_entry_point(entry_point_script_path:String) -> void:
 		file.close()
 	)
 
-	# Start sub-process & execute script (as module).
+	var module_name:String = entry_point_script_path.trim_suffix('.py').trim_prefix('res://').replace('user://',OS.get_user_data_dir()+'/').replace('/','.')
+	#var module_path:String = ProjectSettings.globalize_path(entry_point_script_path.replace('res://',exe_dir_external))
+
+	# Start sub-process & execute script.
 	start()
-	send_input('import %s' % entry_point_script_path.trim_suffix('.py').trim_prefix('res://').replace('user://',OS.get_user_data_dir()+'/').replace('/','.'))
+	send_input(
+		'import %s' % module_name
+		+ '\nif hasattr(%s, \'main\'): %s.main()' % [module_name, module_name]
+	)
+	entry_point_started.emit()
