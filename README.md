@@ -117,4 +117,10 @@ func _on_stopped() -> void:
 
 This is a simple boilerplate script with all the important signals connected. The `PyRunner.start_entry_point('res://main.py')` line is what actually runs your Python script, though keep in mind I recommend this only be run once & trying to call this function while `PyRunner.active` is `true` will print an error.
 
-Now with this autoloaded script in place, when you run your project, the Python script will automatically start as a sub-process that will be killed when your project stops running.
+With this autoloaded script in place, when you run your project, the Python script will automatically start as a sub-process that will be killed when your project stops running.
+
+## Importing
+In your `res://main.py` script, you can import other Python scripts in the `res://` virutal file system, however the paths are absolute instead of relative. So `res://py_scripts/module.py` would be imported as `py_scripts.module` even if your main script is located in the same directory.
+
+To include external libraries, you can simply have them installed on your system & import them like normal in the `res://addons/PyBundle/Interpreter/interpreter.py` script.
+However it will need to be recompiled, refer to [automatic build tools](#automatic-build-tools) for more information on compiling the interpreter.
