@@ -1,7 +1,13 @@
 class_name BinBundleUtil extends Object
 
-static var platform:String = OS.get_name()
-static var architecture:String = Engine.get_architecture_name()
+static var platform:String = OS.get_name():
+	get():
+		if platform.is_empty(): return OS.get_name()
+		return platform
+static var architecture:String = Engine.get_architecture_name():
+	get():
+		if architecture.is_empty(): return Engine.get_architecture_name()
+		return architecture
 
 
 ## Returns platform extension.

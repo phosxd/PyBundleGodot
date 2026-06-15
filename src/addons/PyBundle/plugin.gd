@@ -76,9 +76,6 @@ func _build_py(script_name:String) -> void:
 		var new_binary_name:String = BinBundleUtil.get_platform_extension().trim_prefix('.')+'.%s' % platform_exe_extension
 		DirAccess.rename_absolute(proj_root+start_binary_name+'.%s' % platform_exe_extension, proj_root+new_binary_name)
 
-		if platform == 'Windows':
-			print('\nOn Windows, you need to manually remove the left-over directories & files (*.dist, *.build, *.onefile-build, dist, build, *.spec). The only things that should be left are binary/exe files, Python files, batch/shell files, & a markdown file.')
-
 		print_rich('[b]Done.[/b]')
 	)
 
