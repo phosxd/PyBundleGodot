@@ -3,12 +3,11 @@
 
 # Only include the addons folder when downloading from the Asset Library.
 /**             export-ignore
-/src !export-ignore
-/src/addons !export-ignore
-/src/addons/BinBundle !export-ignore
-/src/addons/BinBundle/** !export-ignore
-/src/addons/PyBundle !export-ignore
-/src/addons/PyBundle/** !export-ignore
+/addons !export-ignore
+/addons/BinBundle !export-ignore
+/addons/BinBundle/** !export-ignore
+/addons/PyBundle !export-ignore
+/addons/PyBundle/** !export-ignore
 
 # Don't include UID files.
 *.uid export-ignore
