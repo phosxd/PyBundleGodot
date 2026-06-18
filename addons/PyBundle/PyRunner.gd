@@ -21,14 +21,10 @@ func _init() -> void:
 	exe_name = ''
 	exe_dir_internal = 'res://addons/PyBundle/Interpreter/'
 	exe_dir_external = 'user://Python/'
-	output_poll_interval = 0.05
-	error_poll_interval = 0.05
 
 
 func start_entry_point(entry_point_script_path:String) -> void:
-	if active:
-		printerr('Cannot call "PyRunner.start_entry_point" while active.')
-		return
+	assert(not active, 'Cannot call "PyRunner.start_entry_point" while active.')
 
 	# Remove old Python scripts on disk.
 	BinBundleUtil.walk_dir(exe_dir_external, func(file_path:String) -> void:
@@ -59,13 +55,15 @@ func start_entry_point(entry_point_script_path:String) -> void:
 		file.close()
 	)
 
-	var module_name:String = entry_point_script_path.trim_suffix('.py').trim_prefix('res://').replace('user://',OS.get_user_data_dir()+'/').replace('/','.')
-	#var module_path:String = ProjectSettings.globalize_path(entry_point_script_path.replace('res://',exe_dir_external))
+	var module_name:String = entry_point_script_path.get_file().split('.')[0]
+	var module_path:String = ProjectSettings.globalize_path(entry_point_script_path.replace('res://',exe_dir_external))
 
 	# Start sub-process & execute script.
 	start()
 	send_input(
-		'import %s' % module_name
+		'import sys'
+		+ '\nsys.path.append(\'%s\')' % module_path.get_base_dir()
+		+ '\nimport %s' % module_name
 		+ '\nif hasattr(%s, \'main\'): %s.main()' % [module_name, module_name]
 	)
 	entry_point_started.emit()

@@ -19,11 +19,11 @@ signal output_received(data:String)
 ## Otherwise it will continue running well after the main process has stopped.
 @export var autostop:bool = true
 ## Time in seconds between each sub-process output check.
-## [br] This has little to no performance impact.
-@export var output_poll_interval:float = 1.0
+## [br]This has little to no performance impact above 0.
+@export var output_poll_interval:float = 0.01
 ## Time in seconds between each sub-process error check.
-## [br] This has little to no performance impact.
-@export var error_poll_interval:float = 1.0
+## [br]This has little to no performance impact above 0.
+@export var error_poll_interval:float = 0.01
 
 ## Process input/output pipe.
 var io_access: FileAccess

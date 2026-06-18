@@ -21,6 +21,7 @@ autowrap_mode = 0
 [node name="Input" type="LineEdit" parent="." unique_id=2046064929]
 unique_name_in_owner = true
 layout_mode = 2
-placeholder_text = "Enter Python script path... (res://main.py)"
+text = "res://Examples/main.py"
+placeholder_text = "Enter Python script path..."
 
 [connection signal="text_submitted" from="Input" to="." method="_on_input_text_submitted"]
