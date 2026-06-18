@@ -120,7 +120,7 @@ This is a simple boilerplate script with all the important signals connected. Th
 With this autoloaded script in place, when you run your project, the Python script will automatically start as a sub-process that will be killed when your project stops running.
 
 ## Importing
-In your `res://main.py` script, you can import other Python scripts in the `res://` virutal file system, however the paths are absolute instead of relative. So `res://py_scripts/module.py` would be imported as `py_scripts.module` even if your main script is located in the same directory.
+In your `res://main.py` script, you can import other Python scripts in the `res://` virutal file system relative to your main script just like in regular Python. 
 
 To include external libraries, you can simply have them installed on your system & import them like normal in the `res://addons/PyBundle/Interpreter/interpreter.py` script.
 However it will need to be recompiled, refer to [automatic build tools](#automatic-build-tools) for more information on compiling the interpreter.
